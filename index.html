@@ -1,47 +1,283 @@
-// Funções JavaScript para adicionar novas funções e riscos dinamicamente
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Checklist Provir Segurança Ocupacional</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>
+    <style>
+        /* Estilos personalizados */
 
-// Função para adicionar novo risco
-function adicionarNovoRisco(idFuncao) {
-  const riscosContainer = document.getElementById(`riscosContainer${idFuncao}`);
-  const riscoCount = riscosContainer.childElementCount;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
 
-  const novoRiscoHTML = `
-    <div class="risco-group">
-        <h4>Risco ${riscoCount + 1}</h4>
-        <!-- Resto do código HTML para os campos do risco -->
-    </div>
-  `;
+        h1 {
+            color: #004080;
+        }
 
-  riscosContainer.insertAdjacentHTML('beforeend', novoRiscoHTML);
-}
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
 
-// Função para adicionar nova função
-function adicionarNovaFuncao() {
-  const funcoesContainer = document.getElementById('funcoesContainer');
-  const funcaoCount = funcoesContainer.childElementCount;
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
 
-  const novaFuncaoHTML = `
-    <div class="funcao-group">
-        <h3>Função ${funcaoCount + 1}</h3>
-        <!-- Resto do código HTML para os campos da função -->
-    </div>
-  `;
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
-  funcoesContainer.insertAdjacentHTML('beforeend', novaFuncaoHTML);
-}
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #004080;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        var riscoCount = 1;
 
-// Função para exibir ou ocultar campo de avaliação quantitativa
-function exibirAvaliacaoQuantitativa() {
-  const tipoAvaliacao = document.getElementById('tipoAvaliacaoRisco1');
-  const avaliacaoQuantitativaContainer = document.getElementById('avaliacaoQuantitativaContainer1');
+        function adicionarNovoRisco(funcaoId) {
+            var riscosContainer = document.getElementById('riscosContainer' + funcaoId);
+            riscoCount++;
 
-  if (tipoAvaliacao.value === 'quantitativo') {
-    avaliacaoQuantitativaContainer.classList.remove('hide');
-  } else {
-    avaliacaoQuantitativaContainer.classList.add('hide');
-  }
-}
+            var riscoGroup = document.createElement('div');
+            riscoGroup.classList.add('risco-group');
 
-// Event listener para o campo tipoAvaliacaoRisco1
-document.getElementById('tipoAvaliacaoRisco1').addEventListener('change', exibirAvaliacaoQuantitativa);
+            var riscoHeading = document.createElement('h4');
+            riscoHeading.textContent = 'Risco ' + riscoCount;
 
+            var nomeRiscoLabel = document.createElement('label');
+            nomeRiscoLabel.setAttribute('for', 'nomeRisco' + riscoCount);
+            nomeRiscoLabel.textContent = 'Nome do Risco:';
+            var nomeRiscoInput = document.createElement('input');
+            nomeRiscoInput.setAttribute('type', 'text');
+            nomeRiscoInput.setAttribute('id', 'nomeRisco' + riscoCount);
+            nomeRiscoInput.setAttribute('name', 'nomeRisco');
+
+            var fonteRiscoLabel = document.createElement('label');
+            fonteRiscoLabel.setAttribute('for', 'fonteRisco' + riscoCount);
+            fonteRiscoLabel.textContent = 'Fonte do Risco:';
+            var fonteRiscoInput = document.createElement('input');
+            fonteRiscoInput.setAttribute('type', 'text');
+            fonteRiscoInput.setAttribute('id', 'fonteRisco' + riscoCount);
+            fonteRiscoInput.setAttribute('name', 'fonteRisco');
+
+            var exposicaoRiscoLabel = document.createElement('label');
+            exposicaoRiscoLabel.setAttribute('for', 'exposicaoRisco' + riscoCount);
+            exposicaoRiscoLabel.textContent = 'Exposição do Risco:';
+            var exposicaoRiscoInput = document.createElement('input');
+            exposicaoRiscoInput.setAttribute('type', 'text');
+            exposicaoRiscoInput.setAttribute('id', 'exposicaoRisco' + riscoCount);
+            exposicaoRiscoInput.setAttribute('name', 'exposicaoRisco');
+
+            var propagacaoRiscoLabel = document.createElement('label');
+            propagacaoRiscoLabel.setAttribute('for', 'propagacaoRisco' + riscoCount);
+            propagacaoRiscoLabel.textContent = 'Meio de Propagação:';
+            var propagacaoRiscoInput = document.createElement('input');
+            propagacaoRiscoInput.setAttribute('type', 'text');
+            propagacaoRiscoInput.setAttribute('id', 'propagacaoRisco' + riscoCount);
+            propagacaoRiscoInput.setAttribute('name', 'propagacaoRisco');
+
+            var lesaoRiscoLabel = document.createElement('label');
+            lesaoRiscoLabel.setAttribute('for', 'lesaoRisco' + riscoCount);
+            lesaoRiscoLabel.textContent = 'Lesões:';
+            var lesaoRiscoInput = document.createElement('input');
+            lesaoRiscoInput.setAttribute('type', 'text');
+            lesaoRiscoInput.setAttribute('id', 'lesaoRisco' + riscoCount);
+            lesaoRiscoInput.setAttribute('name', 'lesaoRisco');
+
+            var tipoAvaliacaoRiscoLabel = document.createElement('label');
+            tipoAvaliacaoRiscoLabel.setAttribute('for', 'tipoAvaliacaoRisco' + riscoCount);
+            tipoAvaliacaoRiscoLabel.textContent = 'Tipo de Avaliação:';
+            var tipoAvaliacaoRiscoSelect = document.createElement('select');
+            tipoAvaliacaoRiscoSelect.setAttribute('id', 'tipoAvaliacaoRisco' + riscoCount);
+            tipoAvaliacaoRiscoSelect.setAttribute('name', 'tipoAvaliacaoRisco');
+            var qualitativoOption = document.createElement('option');
+            qualitativoOption.setAttribute('value', 'qualitativo');
+            qualitativoOption.textContent = 'Qualitativo';
+            var quantitativoOption = document.createElement('option');
+            quantitativoOption.setAttribute('value', 'quantitativo');
+            quantitativoOption.textContent = 'Quantitativo';
+            tipoAvaliacaoRiscoSelect.appendChild(qualitativoOption);
+            tipoAvaliacaoRiscoSelect.appendChild(quantitativoOption);
+            tipoAvaliacaoRiscoSelect.addEventListener('change', function () {
+                var avaliacaoQuantitativaContainer = document.getElementById('avaliacaoQuantitativaContainer' + riscoCount);
+                if (this.value === 'quantitativo') {
+                    avaliacaoQuantitativaContainer.style.display = 'block';
+                } else {
+                    avaliacaoQuantitativaContainer.style.display = 'none';
+                }
+            });
+
+            var avaliacaoQuantitativaContainer = document.createElement('div');
+            avaliacaoQuantitativaContainer.setAttribute('id', 'avaliacaoQuantitativaContainer' + riscoCount);
+            avaliacaoQuantitativaContainer.style.display = 'none';
+            var avaliacaoQuantitativaLabel = document.createElement('label');
+            avaliacaoQuantitativaLabel.setAttribute('for', 'avaliacaoQuantitativa' + riscoCount);
+            avaliacaoQuantitativaLabel.textContent = 'Avaliação Quantitativa:';
+            var avaliacaoQuantitativaInput = document.createElement('input');
+            avaliacaoQuantitativaInput.setAttribute('type', 'file');
+            avaliacaoQuantitativaInput.setAttribute('id', 'avaliacaoQuantitativa' + riscoCount);
+            avaliacaoQuantitativaInput.setAttribute('name', 'avaliacaoQuantitativa');
+            avaliacaoQuantitativaInput.setAttribute('accept', 'application/pdf');
+
+            var fotosRiscoLabel = document.createElement('label');
+            fotosRiscoLabel.setAttribute('for', 'fotosRisco' + riscoCount);
+            fotosRiscoLabel.textContent = 'Fotos do Risco:';
+            var fotosRiscoInput = document.createElement('input');
+            fotosRiscoInput.setAttribute('type', 'file');
+            fotosRiscoInput.setAttribute('id', 'fotosRisco' + riscoCount);
+            fotosRiscoInput.setAttribute('name', 'fotosRisco');
+            fotosRiscoInput.setAttribute('multiple', 'multiple');
+            fotosRiscoInput.setAttribute('accept', 'image/*');
+
+            riscoGroup.appendChild(riscoHeading);
+            riscoGroup.appendChild(nomeRiscoLabel);
+            riscoGroup.appendChild(nomeRiscoInput);
+            riscoGroup.appendChild(fonteRiscoLabel);
+            riscoGroup.appendChild(fonteRiscoInput);
+            riscoGroup.appendChild(exposicaoRiscoLabel);
+            riscoGroup.appendChild(exposicaoRiscoInput);
+            riscoGroup.appendChild(propagacaoRiscoLabel);
+            riscoGroup.appendChild(propagacaoRiscoInput);
+            riscoGroup.appendChild(lesaoRiscoLabel);
+            riscoGroup.appendChild(lesaoRiscoInput);
+            riscoGroup.appendChild(tipoAvaliacaoRiscoLabel);
+            riscoGroup.appendChild(tipoAvaliacaoRiscoSelect);
+            riscoGroup.appendChild(avaliacaoQuantitativaContainer);
+            avaliacaoQuantitativaContainer.appendChild(avaliacaoQuantitativaLabel);
+            avaliacaoQuantitativaContainer.appendChild(avaliacaoQuantitativaInput);
+            riscoGroup.appendChild(fotosRiscoLabel);
+            riscoGroup.appendChild(fotosRiscoInput);
+
+            riscosContainer.appendChild(riscoGroup);
+        }
+
+        function adicionarNovaFuncao() {
+            var funcoesContainer = document.getElementById('funcoesContainer');
+            var funcaoGroup = document.createElement('div');
+            funcaoGroup.classList.add('funcao-group');
+
+            var funcaoHeading = document.createElement('h3');
+            funcaoHeading.textContent = 'Função ' + (funcoesContainer.children.length + 1);
+
+            var funcaoLabel = document.createElement('label');
+            funcaoLabel.setAttribute('for', 'funcao' + (funcoesContainer.children.length + 1));
+            funcaoLabel.textContent = 'Função:';
+            var funcaoInput = document.createElement('input');
+            funcaoInput.setAttribute('type', 'text');
+            funcaoInput.setAttribute('id', 'funcao' + (funcoesContainer.children.length + 1));
+            funcaoInput.setAttribute('name', 'funcao');
+
+            var riscosContainer = document.createElement('div');
+            riscosContainer.setAttribute('id', 'riscosContainer' + (funcoesContainer.children.length + 1));
+
+            var novoRiscoButton = document.createElement('button');
+            novoRiscoButton.textContent = 'Adicionar Novo Risco';
+            novoRiscoButton.addEventListener('click', function () {
+                adicionarNovoRisco(funcoesContainer.children.length + 1);
+            });
+
+            funcaoGroup.appendChild(funcaoHeading);
+            funcaoGroup.appendChild(funcaoLabel);
+            funcaoGroup.appendChild(funcaoInput);
+            funcaoGroup.appendChild(riscosContainer);
+            funcaoGroup.appendChild(novoRiscoButton);
+
+            funcoesContainer.appendChild(funcaoGroup);
+        }
+    </script>
+</head>
+<body>
+    <h1>Checklist Provir Segurança Ocupacional</h1>
+    
+     <form id="checklistForm" action="send_email.php" method="POST">
+        <div class="form-group">
+            <label for="empresa">Nome da Empresa:</label>
+            <input type="text" id="empresa" name="empresa">
+        </div>
+        <div class="form-group">
+            <label for="ambiente">Nome do Ambiente:</label>
+            <input type="text" id="ambiente" name="ambiente">
+        </div>
+        
+        <div id="funcoesContainer">
+            <div class="funcao-group">
+                <h3>Função 1</h3>
+                <div class="form-group">
+                    <label for="funcao1">Função:</label>
+                    <input type="text" id="funcao1" name="funcao">
+                </div>
+                <div id="riscosContainer1">
+                    <div class="risco-group">
+                        <h4>Risco 1</h4>
+                        <div class="form-group">
+                            <label for="nomeRisco1">Nome do Risco:</label>
+                            <input type="text" id="nomeRisco1" name="nomeRisco">
+                        </div>
+                        <div class="form-group">
+                            <label for="fonteRisco1">Fonte do Risco:</label>
+                            <input type="text" id="fonteRisco1" name="fonteRisco">
+                        </div>
+                        <div class="form-group">
+                            <label for="exposicaoRisco1">Exposição do Risco:</label>
+                            <input type="text" id="exposicaoRisco1" name="exposicaoRisco">
+                        </div>
+                        <div class="form-group">
+                            <label for="propagacaoRisco1">Meio de Propagação:</label>
+                            <input type="text" id="propagacaoRisco1" name="propagacaoRisco">
+                        </div>
+                        <div class="form-group">
+                            <label for="lesoesRisco1">Lesões:</label>
+                            <input type="text" id="lesoesRisco1" name="lesoesRisco">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoAvaliacaoRisco1">Tipo de Avaliação:</label>
+                            <select id="tipoAvaliacaoRisco1" name="tipoAvaliacaoRisco">
+                                <option value="qualitativo">Qualitativo</option>
+                                <option value="quantitativo">Quantitativo</option>
+                            </select>
+                        </div>
+                        <div id="avaliacaoQuantitativaContainer1" style="display: none;">
+                            <div id="avaliacaoQuantitativaContainer1" class="form-group hide">
+   				 	<label for="avaliacaoQuantitativa1">Avaliação Quantitativa:</label>
+  		  			<input type="file" id="avaliacaoQuantitativa1" name="avaliacaoQuantitativa" accept="application/pdf">
+				    </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fotosRisco1">Fotos do Risco:</label>
+                            <input type="file" id="fotosRisco1" name="fotosRisco" multiple accept="image/*">
+                        </div>
+                        <button type="button" onclick="adicionarNovoRisco(1)">Adicionar Novo Risco</button>
+                    </div>
+                </div>
+                <button type="button" onclick="adicionarNovaFuncao()">Adicionar Nova Função</button>
+            </div>
+        </div>
+        
+        <button type="button" onclick="adicionarItem()">Adicionar Item</button>
+	<button type="submit">Enviar</button>
+    </form>
+    
+    <ul id="checklist"></ul>
+</body>
+</html>
