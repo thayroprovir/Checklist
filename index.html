@@ -24,11 +24,11 @@
                 <h3>Função 1</h3>
                 <div class="form-group">
                     <label for="funcao1">Função:</label>
-                    <input type="text" id="funcao1" name="funcao">
+                    <input type="text" id="funcao1" name="funcao[]">
                 </div>
                 <div class="form-group">
                     <label for="cbo1">Código Brasileiro de Ocupações (CBO):</label>
-                    <input type="text" id="cbo1" name="cbo">
+                    <input type="text" id="cbo1" name="cbo[]">
                     <a href="http://www.mtecbo.gov.br/cbosite/pages/pesquisas/BuscaPorCodigo.jsf" target="_blank">Consultar CBO</a>
                 </div>
                 <div id="riscosContainer1">
@@ -36,27 +36,27 @@
                         <h4>Risco 1</h4>
                         <div class="form-group">
                             <label for="nomeRisco1">Nome do Risco:</label>
-                            <input type="text" id="nomeRisco1" name="nomeRisco">
+                            <input type="text" id="nomeRisco1" name="nomeRisco[1][]">
                         </div>
                         <div class="form-group">
                             <label for="fonteRisco1">Fonte do Risco:</label>
-                            <input type="text" id="fonteRisco1" name="fonteRisco">
+                            <input type="text" id="fonteRisco1" name="fonteRisco[1][]">
                         </div>
                         <div class="form-group">
                             <label for="exposicaoRisco1">Exposição do Risco:</label>
-                            <input type="text" id="exposicaoRisco1" name="exposicaoRisco">
+                            <input type="text" id="exposicaoRisco1" name="exposicaoRisco[1][]">
                         </div>
                         <div class="form-group">
                             <label for="propagacaoRisco1">Meio de Propagação:</label>
-                            <input type="text" id="propagacaoRisco1" name="propagacaoRisco">
+                            <input type="text" id="propagacaoRisco1" name="propagacaoRisco[1][]">
                         </div>
                         <div class="form-group">
                             <label for="lesoesRisco1">Lesões:</label>
-                            <input type="text" id="lesoesRisco1" name="lesoesRisco">
+                            <input type="text" id="lesoesRisco1" name="lesoesRisco[1][]">
                         </div>
                         <div class="form-group">
                             <label for="tipoAvaliacaoRisco1">Tipo de Avaliação:</label>
-                            <select id="tipoAvaliacaoRisco1" name="tipoAvaliacaoRisco">
+                            <select id="tipoAvaliacaoRisco1" name="tipoAvaliacaoRisco[1][]">
                                 <option value="qualitativo">Qualitativo</option>
                                 <option value="quantitativo">Quantitativo</option>
                             </select>
@@ -64,12 +64,12 @@
                         <div id="avaliacaoQuantitativaContainer1" style="display: none;">
                             <div class="form-group">
                                 <label for="avaliacaoQuantitativa1">Avaliação Quantitativa:</label>
-                                <input type="file" id="avaliacaoQuantitativa1" name="avaliacaoQuantitativa" accept="application/pdf">
+                                <input type="file" id="avaliacaoQuantitativa1" name="avaliacaoQuantitativa[1][]" accept="application/pdf">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="fotosRisco1">Fotos do Risco:</label>
-                            <input type="file" id="fotosRisco1" name="fotosRisco" multiple accept="image/*">
+                            <input type="file" id="fotosRisco1" name="fotosRisco[1][]" multiple accept="image/*">
                         </div>
                         <button type="button" onclick="adicionarNovoRisco(1)">Adicionar Novo Risco</button>
                     </div>
@@ -78,10 +78,9 @@
             </div>
         </div>
         
-        <button type="button" onclick="adicionarItem()">Adicionar Item</button>
+        <button type="submit">Enviar</button>
     </form>
     
     <ul id="checklist"></ul>
 </body>
 </html>
-     
