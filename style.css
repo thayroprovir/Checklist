@@ -1,83 +1,47 @@
-/* Estilos gerais */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f1f1f1;
-    margin: 0;
-    padding: 0;
+// Funções JavaScript para adicionar novas funções e riscos dinamicamente
+
+// Função para adicionar novo risco
+function adicionarNovoRisco(idFuncao) {
+  const riscosContainer = document.getElementById(`riscosContainer${idFuncao}`);
+  const riscoCount = riscosContainer.childElementCount;
+
+  const novoRiscoHTML = `
+    <div class="risco-group">
+        <h4>Risco ${riscoCount + 1}</h4>
+        <!-- Resto do código HTML para os campos do risco -->
+    </div>
+  `;
+
+  riscosContainer.insertAdjacentHTML('beforeend', novoRiscoHTML);
 }
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+// Função para adicionar nova função
+function adicionarNovaFuncao() {
+  const funcoesContainer = document.getElementById('funcoesContainer');
+  const funcaoCount = funcoesContainer.childElementCount;
+
+  const novaFuncaoHTML = `
+    <div class="funcao-group">
+        <h3>Função ${funcaoCount + 1}</h3>
+        <!-- Resto do código HTML para os campos da função -->
+    </div>
+  `;
+
+  funcoesContainer.insertAdjacentHTML('beforeend', novaFuncaoHTML);
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+// Função para exibir ou ocultar campo de avaliação quantitativa
+function exibirAvaliacaoQuantitativa() {
+  const tipoAvaliacao = document.getElementById('tipoAvaliacaoRisco1');
+  const avaliacaoQuantitativaContainer = document.getElementById('avaliacaoQuantitativaContainer1');
+
+  if (tipoAvaliacao.value === 'quantitativo') {
+    avaliacaoQuantitativaContainer.classList.remove('hide');
+  } else {
+    avaliacaoQuantitativaContainer.classList.add('hide');
+  }
 }
 
-h2, h3, h4 {
-    color: #333;
-}
+// Event listener para o campo tipoAvaliacaoRisco1
+document.getElementById('tipoAvaliacaoRisco1').addEventListener('change', exibirAvaliacaoQuantitativa);
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-    font-weight: bold;
-}
-
-input[type="text"], select, input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Estilos específicos para dispositivos móveis */
-@media screen and (max-width: 480px) {
-    .container {
-        padding: 10px;
-    }
-    
-    h1 {
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
-    
-    h2, h3, h4 {
-        font-size: 18px;
-    }
-    
-    input[type="text"], select, input[type="file"] {
-        font-size: 14px;
-    }
-    
-    button {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-}
