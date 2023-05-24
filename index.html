@@ -210,7 +210,115 @@
 <body>
     <h1>Checklist Provir Segurança Ocupacional</h1>
     
-     <form id="checklistForm" action="send_email.php" method="POST">
+<?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Dados do formulário
+        $empresa = $_POST["empresa"];
+        $ambiente = $_POST["ambiente"];
+        
+        // Processar funções e riscos
+        $funcoes = array();
+        if (isset($_POST["funcao"])) {
+            $funcaoCount = count($_POST["funcao"]);
+            
+            for ($i = 0; $i < $funcaoCount; $i++) {
+                $funcao = $_POST["funcao"][$i];
+                $riscos = array();
+                
+                if (isset($_POST["nomeRisco"][$i])) {
+                    $riscoCount = count($_POST["nomeRisco"][$i]);
+                    
+                    // Processar riscos
+                    for ($j = 0; $j < $riscoCount; $j++) {
+                        $nomeRisco = $_POST["nomeRisco"][$i][$j];
+                        $fonteRisco = $_POST["fonteRisco"][$i][$j];
+                        $exposicaoRisco = $_POST["exposicaoRisco"][$i][$j];
+                        $propagacaoRisco = $_POST["propagacaoRisco"][$i][$j];
+                        $lesoesRisco = $_POST["lesoesRisco"][$i][$j];
+                        $tipoAvaliacaoRisco = $_POST["tipoAvaliacaoRisco"][$i][$j];
+                        $avaliacaoQuantitativaRisco = $_FILES["avaliacaoQuantitativa"][$i][$j];
+                        $fotosRisco = $_FILES["fotosRisco"][$i][$j];
+                        
+                        // Processar os dados do risco aqui...
+                    }
+                    
+                    $funcoes[] = array(
+                        "funcao" => $funcao,
+                        "riscos" => $riscos
+                    );
+                }
+            }
+        }
+        
+        // Enviar e-mail com os dados ou fazer outras ações
+if (isset($_POST['submit'])) {
+    // Processar os dados do formulário aqui...
+
+    // Construir o corpo do e-mail com os dados do formulário
+    $emailBody = "Dados do formulário:\n\n";
+    $emailBody .= "Nome: " . $_POST['nome'] . "\n";
+    $emailBody .= "E-mail: " . $_POST['email'] . "\n";
+    // Adicionar mais campos do formulário conforme necessário...
+
+    // Criar um array com os caminhos dos arquivos anexos
+    $arquivosAnexo = [];
+    foreach ($_FILES['arquivo']['tmp_name'] as $tmpFile) {
+        if (!empty($tmpFile)) {
+            $arquivosAnexo[] = $tmpFile;
+        }
+    }
+
+    // Gerar o nome do arquivo do Excel
+    $excelFileName = 'formulario.xlsx';
+
+    // Gerar o arquivo do Excel
+    // (Substitua essa parte pelo código para gerar o arquivo Excel com os dados do formulário)
+    // Exemplo simples:
+    $excelData = [
+        ['Nome', 'E-mail'],
+        [$_POST['nome'], $_POST['email']],
+        // Adicionar mais linhas com outros campos do formulário conforme necessário...
+    ];
+    $objPHPExcel = new PHPExcel();
+    $objPHPExcel->getActiveSheet()->fromArray($excelData, NULL, 'A1');
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $objWriter->save($excelFileName);
+
+    // Enviar o e-mail com os dados do formulário e o arquivo Excel anexado
+    $to = 'destinatario@example.com';
+    $subject = 'Dados do formulário';
+    $headers = 'From: remetente@example.com' . "\r\n" .
+               'Reply-To: remetente@example.com' . "\r\n" .
+               'Content-Type: text/plain; charset=utf-8' . "\r\n" .
+               'X-Mailer: PHP/' . phpversion();
+    
+    $attachmentBoundary = "--" . md5(uniqid(mt_rand(), true));
+    $emailBody .= "\n\n--" . $attachmentBoundary . "\n";
+    $emailBody .= "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; name=" . $excelFileName . "\n";
+    $emailBody .= "Content-Transfer-Encoding: base64\n";
+    $emailBody .= "Content-Disposition: attachment; filename=" . $excelFileName . "\n\n";
+    $emailBody .= chunk_split(base64_encode(file_get_contents($excelFileName)));
+    $emailBody .= "\n\n--" . $attachmentBoundary . "--\n";
+
+    // Envio do e-mail
+    if (mail($to, $subject, $emailBody, $headers, "-fremetente@example.com")) {
+        echo "E-mail enviado com sucesso.";
+    } else {
+        echo "Ocorreu um erro ao enviar o e-mail.";
+    }
+
+    // Remover o arquivo do Excel após o envio do e-mail
+    unlink($excelFileName);
+
+    // Redirecionar ou exibir uma mensagem de sucesso, conforme necessário
+    // header('Location: success.html');
+    // echo "Formulário enviado com sucesso!";
+}
+
+   
+    ?>
+
+    <form id="checklistForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="empresa">Nome da Empresa:</label>
             <input type="text" id="empresa" name="empresa">
@@ -221,63 +329,55 @@
         </div>
         
         <div id="funcoesContainer">
-            <div class="funcao-group">
-                <h3>Função 1</h3>
-                <div class="form-group">
-                    <label for="funcao1">Função:</label>
-                    <input type="text" id="funcao1" name="funcao">
-                </div>
-                <div id="riscosContainer1">
-                    <div class="risco-group">
-                        <h4>Risco 1</h4>
-                        <div class="form-group">
-                            <label for="nomeRisco1">Nome do Risco:</label>
-                            <input type="text" id="nomeRisco1" name="nomeRisco">
-                        </div>
-                        <div class="form-group">
-                            <label for="fonteRisco1">Fonte do Risco:</label>
-                            <input type="text" id="fonteRisco1" name="fonteRisco">
-                        </div>
-                        <div class="form-group">
-                            <label for="exposicaoRisco1">Exposição do Risco:</label>
-                            <input type="text" id="exposicaoRisco1" name="exposicaoRisco">
-                        </div>
-                        <div class="form-group">
-                            <label for="propagacaoRisco1">Meio de Propagação:</label>
-                            <input type="text" id="propagacaoRisco1" name="propagacaoRisco">
-                        </div>
-                        <div class="form-group">
-                            <label for="lesoesRisco1">Lesões:</label>
-                            <input type="text" id="lesoesRisco1" name="lesoesRisco">
-                        </div>
-                        <div class="form-group">
-                            <label for="tipoAvaliacaoRisco1">Tipo de Avaliação:</label>
-                            <select id="tipoAvaliacaoRisco1" name="tipoAvaliacaoRisco">
-                                <option value="qualitativo">Qualitativo</option>
-                                <option value="quantitativo">Quantitativo</option>
-                            </select>
-                        </div>
-                        <div id="avaliacaoQuantitativaContainer1" style="display: none;">
-                            <div id="avaliacaoQuantitativaContainer1" class="form-group hide">
-   				 	<label for="avaliacaoQuantitativa1">Avaliação Quantitativa:</label>
-  		  			<input type="file" id="avaliacaoQuantitativa1" name="avaliacaoQuantitativa" accept="application/pdf">
-				    </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="fotosRisco1">Fotos do Risco:</label>
-                            <input type="file" id="fotosRisco1" name="fotosRisco" multiple accept="image/*">
-                        </div>
-                        <button type="button" onclick="adicionarNovoRisco(1)">Adicionar Novo Risco</button>
+            <?php
+            if (!empty($funcoes)) {
+                foreach ($funcoes as $index => $funcaoData) {
+                    $funcao = $funcaoData["funcao"];
+                    $riscos = $funcaoData["riscos"];
+                    $funcaoIndex = $index + 1;
+                    ?>
+                    <div class="funcao">
+                        <h2>Função <?php echo $funcaoIndex; ?></h2>
+                        <input type="text" name="funcao[]" value="<?php echo $funcao; ?>" readonly>
+                        
+                        <!-- Campos para os riscos -->
+                        <?php
+                        if (!empty($riscos)) {
+                            foreach ($riscos as $riscoIndex => $riscoData) {
+                                $nomeRisco = $riscoData["nomeRisco"];
+                                $fonteRisco = $riscoData["fonteRisco"];
+                                $exposicaoRisco = $riscoData["exposicaoRisco"];
+                                $propagacaoRisco = $riscoData["propagacaoRisco"];
+                                $lesoesRisco = $riscoData["lesoesRisco"];
+                                $tipoAvaliacaoRisco = $riscoData["tipoAvaliacaoRisco"];
+                                $avaliacaoQuantitativaRisco = $riscoData["avaliacaoQuantitativaRisco"];
+                                $fotosRisco = $riscoData["fotosRisco"];
+                                ?>
+                                <div class="risco">
+                                    <h3>Risco <?php echo $riscoIndex + 1; ?></h3>
+                                    <input type="text" name="nomeRisco[<?php echo $index; ?>][]" value="<?php echo $nomeRisco; ?>" readonly>
+                                    <input type="text" name="fonteRisco[<?php echo $index; ?>][]" value="<?php echo $fonteRisco; ?>" readonly>
+                                    <input type="text" name="exposicaoRisco[<?php echo $index; ?>][]" value="<?php echo $exposicaoRisco; ?>" readonly>
+                                    <input type="text" name="propagacaoRisco[<?php echo $index; ?>][]" value="<?php echo $propagacaoRisco; ?>" readonly>
+                                    <input type="text" name="lesoesRisco[<?php echo $index; ?>][]" value="<?php echo $lesoesRisco; ?>" readonly>
+                                    <input type="text" name="tipoAvaliacaoRisco[<?php echo $index; ?>][]" value="<?php echo $tipoAvaliacaoRisco; ?>" readonly>
+                                    <input type="file" name="avaliacaoQuantitativa[<?php echo $index; ?>][][]">
+                                    <input type="file" name="fotosRisco[<?php echo $index; ?>][][]">
+                                </div>
+                                <?php
+                            }
+                        }
+                        ?>
                     </div>
-                </div>
-                <button type="button" onclick="adicionarNovaFuncao()">Adicionar Nova Função</button>
-            </div>
+                    <?php
+                }
+            }
+            ?>
         </div>
         
-        <button type="button" onclick="adicionarItem()">Adicionar Item</button>
-	<button type="submit">Enviar</button>
+        <button type="submit">Enviar</button>
+	<a href="mailto:administracao@clinicaprovir.com?subject=Dados%20do%20formulario&amp;body=Nome%3A%20<?php echo urlencode($_POST['nome']); ?>%0AEmail%3A%20<?php echo urlencode($_POST['email']); ?>">Enviar e-mail</a>
+
     </form>
-    
-    <ul id="checklist"></ul>
 </body>
 </html>
